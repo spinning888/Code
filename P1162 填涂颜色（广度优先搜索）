@@ -1,0 +1,57 @@
+#include<bits/stdc++.h>
+using namespace std;
+using ll = long long;
+int n,tmp,tx,ty;
+int dx[4]={1,0,-1,0};
+int dy[4]={0,1,0,-1};
+int a[35][35]={0},vis[35][35]={0};
+struct node{
+    int x,y;   
+    node(int x,int y):x(x),y(y){}; 
+};
+
+void bfs(const node& t){
+    queue<node> q;
+    q.push(t);
+    while(!q.empty()){
+        node p=q.front();
+        q.pop();
+        for(int i=0;i<4;i++){
+            tx=p.x+dx[i];
+            ty=p.y+dy[i];
+            if(tx<0||tx>n+1||ty<0||ty>n+1) continue;
+            if(!vis[tx][ty]&&!a[tx][ty]){
+                vis[tx][ty]=1;
+                q.push(node(tx,ty));
+            }
+        }
+    }
+}
+void solve() {
+    cin>>n;
+//输入[1,n][1,n],实际初始化[0,n+1][0,n+1]保证bfs连通性
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=n;j++){
+            cin>>tmp;
+            if(tmp) a[i][j]=1;
+        }
+    }
+    vis[0][0]=1;
+    bfs(node(0,0));
+    for(int i=1;i<=n;i++){
+        for(int j=1;j<=n;j++){
+            if(!a[i][j]&&vis[i][j]) cout<<0<<" ";
+            else if(a[i][j]) cout<<1<<" ";
+            else cout<<2<<" ";
+        }
+        cout<<endl;
+    }
+}
+
+int main() {
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    solve();
+    return 0;
+}
